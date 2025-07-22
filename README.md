@@ -54,7 +54,7 @@ Open the HTML file in a web browser or serve it from your Flask server at http:/
 
 The frontend automatically connects to your backend API at http://localhost:5000/api and provides a complete user interface for email validation with real-time updates and professional result presentation.
 
-This project is created by Mivibzzz.com
+This project is created by http://Mivibzzz.com
 Feel free to use it :) Hope it helps
 
 
