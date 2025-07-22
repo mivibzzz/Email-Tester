@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Validator Dashboard by Mivibzzz.com</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            padding: 30px;
+            color: white;
+            text-align: center;
+        }
+
+        .card-header h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .card-body {
+            padding: 40px;
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b, #e55656);
+        }
+
+        .progress-section {
+            display: none;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e1e8ed;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00b894, #00cec9);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .stat-card.excellent { border-color: #00b894; }
+        .stat-card.good { border-color: #00cec9; }
+        .stat-card.fair { border-color: #fdcb6e; }
+        .stat-card.poor { border-color: #fd79a8; }
+        .stat-card.invalid { border-color: #e17055; }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e1e8ed;
+        }
+
+        .results-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .results-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-excellent { background: #d1f2eb; color: #00b894; }
+        .status-good { background: #d1f7f0; color: #00cec9; }
+        .status-fair { background: #fef5e7; color: #fdcb6e; }
+        .status-poor { background: #fdedef; color: #fd79a8; }
+        .status-invalid { background: #fdefed; color: #e17055; }
+
+        .score-bar {
+            width: 60px;
+            height: 8px;
+            background: #e1e8ed;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .score-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .export-buttons {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .alert-error {
+            background: #fdedef;
+            color: #e17055;
+            border: 1px solid #e17055;
+        }
+
+        .alert-success {
+            background: #d1f2eb;
+            color: #00b894;
+            border: 1px solid #00b894;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .card-body {
+                padding: 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            .results-table {
+                font-size: 14px;
+            }
+            
+            .results-table th,
+            .results-table td {
+                padding: 10px 8px;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Email Validator by Mivi :) <a href="https://mivibzzz.com" target="_blank">Mivibzzz.com</a></h1>
+            <p>Professional email validation with comprehensive checks</p>
+        </header>
+
+        <div class="main-card">
+            <div class="card-header">
+                <h2>Validate Email Addresses</h2>
+                <p>Enter emails and configure validation settings</p>
+            </div>
+            
+            <div class="card-body">
+                <!-- Input Section -->
+                <div id="input-section" class="form-section">
+                    <div class="form-group">
+                        <label for="emailInput">Email Addresses (one per line):</label>
+                        <textarea 
+                            id="emailInput" 
+                            class="form-control" 
+                            placeholder="user@example.com&#10;another@domain.org&#10;test@company.net"
+                            rows="8"
+                        ></textarea>
+                    </div>
+
+                    <!-- Configuration Options -->
+                    <div class="form-group">
+                        <label>Validation Configuration:</label>
+                        <div class="config-grid">
+                            <div>
+                                <label for="delayInput">Delay between validations (seconds):</label>
+                                <input type="number" id="delayInput" class="form-control" value="1" min="0" step="0.5">
+                            </div>
+                            <div>
+                                <label for="timeoutInput">SMTP timeout (seconds):</label>
+                                <input type="number" id="timeoutInput" class="form-control" value="10" min="1" max="60">
+                            </div>
+                            <div>
+                                <label for="smtpSkip">Skip SMTP for:</label>
+                                <select id="smtpSkip" class="form-control">
+                                    <option value="webmail">Webmail providers only</option>
+                                    <option value="none">Don't skip any</option>
+                                    <option value="all">Skip all SMTP checks</option>
+                                </select>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="catchAllCheck" checked>
+                                <label for="catchAllCheck">Check for catch-all domains</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="validateBtn" class="btn">
+                         Start Validation
+                    </button>
+                </div>
+
+                <!-- Progress Section -->
+                <div id="progress-section" class="progress-section">
+                    <div class="spinner"></div>
+                    <div class="progress-text">Initializing validation...</div>
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                    <div id="progress-details">0 of 0 emails processed</div>
+                    <button id="cancelBtn" class="btn btn-danger" style="margin-top: 20px;">
+                        Cancel Validation
+                    </button>
+                </div>
+
+                <!-- Results Section -->
+                <div id="results-section" class="results-section">
+                    <h3>Validation Results</h3>
+                    
+                    <div id="stats-grid" class="stats-grid">
+                        <!-- Stats will be populated here -->
+                    </div>
+
+                    <div class="export-buttons">
+                        <button id="exportCsvBtn" class="btn btn-secondary">📊 Export CSV</button>
+                        <button id="exportJsonBtn" class="btn btn-secondary">📋 Export JSON</button>
+                        <button id="newValidationBtn" class="btn">🔄 New Validation</button>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table id="results-table" class="results-table">
+                            <thead>
+                                <tr>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Score</th>
+                                    <th>Domain</th>
+                                    <th>Syntax</th>
+                                    <th>MX</th>
+                                    <th>SMTP</th>
+                                    <th>Disposable</th>
+                                    <th>Role</th>
+                                    <th>Catch-all</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Results will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Alert messages -->
+                <div id="alert-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class EmailValidator {
+            constructor() {
+                this.apiBase = 'http://localhost:5000/api';
+                this.currentSession = null;
+                this.pollInterval = null;
+                this.results = [];
+                
+                this.initializeEventListeners();
+            }
+
+            initializeEventListeners() {
+                document.getElementById('validateBtn').addEventListener('click', () => this.startValidation());
+                document.getElementById('cancelBtn').addEventListener('click', () => this.cancelValidation());
+                document.getElementById('newValidationBtn').addEventListener('click', () => this.resetForm());
+                document.getElementById('exportCsvBtn').addEventListener('click', () => this.exportCsv());
+                document.getElementById('exportJsonBtn').addEventListener('click', () => this.exportJson());
+            }
+
+            showAlert(message, type = 'error') {
+                const alertContainer = document.getElementById('alert-container');
+                const alert = document.createElement('div');
+                alert.className = `alert alert-${type}`;
+                alert.textContent = message;
+                alertContainer.innerHTML = '';
+                alertContainer.appendChild(alert);
+
+                setTimeout(() => {
+                    alert.remove();
+                }, 5000);
+            }
+
+            async startValidation() {
+                const emailText = document.getElementById('emailInput').value.trim();
+                if (!emailText) {
+                    this.showAlert('Please enter at least one email address');
+                    return;
+                }
+
+                const emails = emailText.split('\n').filter(email => email.trim());
+                if (emails.length === 0) {
+                    this.showAlert('Please enter valid email addresses');
+                    return;
+                }
+
+                const config = {
+                    delay: parseFloat(document.getElementById('delayInput').value),
+                    smtp_timeout: parseInt(document.getElementById('timeoutInput').value),
+                    skip_smtp: document.getElementById('smtpSkip').value,
+                    check_catch_all: document.getElementById('catchAllCheck').checked
+                };
+
+                try {
+                    const response = await fetch(`${this.apiBase}/validate`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ emails, config })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    this.currentSession = data.session_id;
+                    
+                    this.showProgressSection();
+                    this.startPolling();
+                    
+                } catch (error) {
+                    this.showAlert(`Failed to start validation: ${error.message}`);
+                }
+            }
+
+            showProgressSection() {
+                document.getElementById('input-section').style.display = 'none';
+                document.getElementById('progress-section').style.display = 'block';
+                document.getElementById('results-section').style.display = 'none';
+            }
+
+            startPolling() {
+                this.pollInterval = setInterval(async () => {
+                    try {
+                        const response = await fetch(`${this.apiBase}/status/${this.currentSession}`);
+                        const data = await response.json();
+
+                        this.updateProgress(data);
+
+                        if (data.status === 'completed') {
+                            clearInterval(this.pollInterval);
+                            await this.loadResults();
+                        } else if (data.status === 'error') {
+                            clearInterval(this.pollInterval);
+                            this.showAlert('Validation failed with an error');
+                            this.resetForm();
+                        }
+                    } catch (error) {
+                        console.error('Polling error:', error);
+                        this.showAlert('Connection error occurred');
+                        this.cancelValidation();
+                    }
+                }, 1000);
+            }
+
+            updateProgress(data) {
+                const progressText = document.querySelector('.progress-text');
+                const progressFill = document.getElementById('progress-fill');
+                const progressDetails = document.getElementById('progress-details');
+
+                progressText.textContent = `Validating emails... ${Math.round(data.progress)}%`;
+                progressFill.style.width = `${data.progress}%`;
+                progressDetails.textContent = `${data.completed} of ${data.total} emails processed`;
+            }
+
+            async loadResults() {
+                try {
+                    const response = await fetch(`${this.apiBase}/results/${this.currentSession}`);
+                    const data = await response.json();
+
+                    this.results = data.results;
+                    this.displayResults(data.results, data.stats);
+                    
+                } catch (error) {
+                    this.showAlert(`Failed to load results: ${error.message}`);
+                }
+            }
+
+            displayResults(results, stats) {
+                document.getElementById('progress-section').style.display = 'none';
+                document.getElementById('results-section').style.display = 'block';
+
+                this.displayStats(stats);
+                this.displayResultsTable(results);
+                this.showAlert('Validation completed successfully!', 'success');
+            }
+
+            displayStats(stats) {
+                const statsGrid = document.getElementById('stats-grid');
+                statsGrid.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.total}</div>
+                        <div class="stat-label">Total Emails</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.average_score}</div>
+                        <div class="stat-label">Average Score</div>
+                    </div>
+                    <div class="stat-card excellent">
+                        <div class="stat-number">${stats.excellent}</div>
+                        <div class="stat-label">Excellent</div>
+                    </div>
+                    <div class="stat-card good">
+                        <div class="stat-number">${stats.good}</div>
+                        <div class="stat-label">Good</div>
+                    </div>
+                    <div class="stat-card fair">
+                        <div class="stat-number">${stats.fair}</div>
+                        <div class="stat-label">Fair</div>
+                    </div>
+                    <div class="stat-card poor">
+                        <div class="stat-number">${stats.poor}</div>
+                        <div class="stat-label">Poor</div>
+                    </div>
+                    <div class="stat-card invalid">
+                        <div class="stat-number">${stats.invalid}</div>
+                        <div class="stat-label">Invalid</div>
+                    </div>
+                `;
+            }
+
+            displayResultsTable(results) {
+                const tbody = document.querySelector('#results-table tbody');
+                tbody.innerHTML = '';
+
+                results.forEach(result => {
+                    const row = document.createElement('tr');
+                    
+                    const statusClass = result.status.toLowerCase().replace(' ', '-');
+                    const scoreColor = this.getScoreColor(result.score);
+                    
+                    row.innerHTML = `
+                        <td style="font-weight: 500;">${result.email}</td>
+                        <td>
+                            <span class="status-badge status-${statusClass}">
+                                ${result.status}
+                            </span>
+                        </td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-weight: 600;">${result.score}</span>
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: ${result.score}%; background: ${scoreColor};"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${result.domain}</td>
+                        <td>${this.getBooleanIcon(result.syntax)}</td>
+                        <td>${this.getBooleanIcon(result.mx)}</td>
+                        <td>${this.getSmtpIcon(result.smtp)}</td>
+                        <td>${this.getBooleanIcon(result.disposable, true)}</td>
+                        <td>${this.getBooleanIcon(result.role, true)}</td>
+                        <td>${this.getBooleanIcon(result.catch_all, true)}</td>
+                    `;
+                    
+                    tbody.appendChild(row);
+                });
+            }
+
+            getScoreColor(score) {
+                if (score >= 90) return '#00b894';
+                if (score >= 75) return '#00cec9';
+                if (score >= 60) return '#fdcb6e';
+                if (score >= 40) return '#fd79a8';
+                return '#e17055';
+            }
+
+            getBooleanIcon(value, invert = false) {
+                if (value === null || value === undefined) return '<span style="color: #999;">-</span>';
+                
+                const isGood = invert ? !value : value;
+                return isGood 
+                    ? '<span style="color: #00b894; font-weight: bold;">✓</span>'
+                    : '<span style="color: #e17055; font-weight: bold;">✗</span>';
+            }
+
+            getSmtpIcon(value) {
+                if (value === true) return '<span style="color: #00b894; font-weight: bold;">✓</span>';
+                if (value === false) return '<span style="color: #e17055; font-weight: bold;">✗</span>';
+                return '<span style="color: #999;">Skip</span>';
+            }
+
+            cancelValidation() {
+                if (this.pollInterval) {
+                    clearInterval(this.pollInterval);
+                    this.pollInterval = null;
+                }
+                this.resetForm();
+            }
+
+            resetForm() {
+                this.currentSession = null;
+                this.results = [];
+                
+                if (this.pollInterval) {
+                    clearInterval(this.pollInterval);
+                    this.pollInterval = null;
+                }
+
+                document.getElementById('input-section').style.display = 'block';
+                document.getElementById('progress-section').style.display = 'none';
+                document.getElementById('results-section').style.display = 'none';
+                document.getElementById('alert-container').innerHTML = '';
+            }
+
+            exportCsv() {
+                if (this.results.length === 0) return;
+
+                const headers = ['Email', 'Status', 'Score', 'Domain', 'Syntax', 'MX', 'SMTP', 'Disposable', 'Role', 'Catch-all'];
+                const rows = this.results.map(result => [
+                    result.email,
+                    result.status,
+                    result.score,
+                    result.domain,
+                    result.syntax,
+                    result.mx,
+                    result.smtp,
+                    result.disposable,
+                    result.role,
+                    result.catch_all
+                ]);
+
+                const csvContent = [headers, ...rows]
+                    .map(row => row.map(cell => `"${cell}"`).join(','))
+                    .join('\n');
+
+                this.downloadFile(csvContent, 'email-validation-results.csv', 'text/csv');
+            }
+
+            exportJson() {
+                if (this.results.length === 0) return;
+
+                const jsonContent = JSON.stringify(this.results, null, 2);
+                this.downloadFile(jsonContent, 'email-validation-results.json', 'application/json');
+            }
+
+            downloadFile(content, filename, contentType) {
+                const blob = new Blob([content], { type: contentType });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }
+        }
+
+        // Initialize the application when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new EmailValidator();
+        });
+    </script>
+</body>
+</html>
